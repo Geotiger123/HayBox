@@ -12,33 +12,23 @@ Rivals2::Rivals2() : ControllerMode() {}
 void Rivals2::UpdateDigitalOutputs(const InputState &inputs, OutputState &outputs) {
     outputs.a = inputs.rt1;
     outputs.b = inputs.rf1;
-    outputs.x = inputs.rf2;
+    outputs.x = inputs.rf3;
     outputs.y = inputs.rf6;
-    outputs.buttonR = inputs.rf3;
-    if (inputs.nunchuk_connected) {
-        // Lightshield with C button.
-        if (inputs.nunchuk_c) {
-            outputs.triggerLAnalog = 49;
-        }
-        outputs.triggerLDigital = inputs.nunchuk_z;
-    } else {
-        outputs.triggerLDigital = inputs.lf4;
-    }
-    outputs.triggerRDigital = inputs.rf5;
-    outputs.start = inputs.mb1;
-    outputs.select = inputs.mb3;
-    outputs.home = inputs.mb2;
-    outputs.leftStickClick = inputs.rf7;
-    outputs.buttonL = inputs.rf8; // changed from rightStickClick to buttonL
+    outputs.buttonR = inputs.lf5;
+    outputs.triggerLDigital = inputs.lf4;
+    outputs.triggerRDigital = inputs.rf2;
+    outputs.start = inputs.mb1; 
+    outputs.select = (inputs.mb1 && inputs.lt4);
+    outputs.home = (inputs.mb1 && inputs.lt5);
+    outputs.leftStickClick = inputs.lt1;
+    outputs.buttonL = inputs.lt3; // changed from rightStickClick to buttonL
     // only because buttonL is a default mapping in Rivals 2 (doesn't really matter)
 
-    // Activate D-Pad layer by holding Mod X + Mod Y.
-    if (inputs.lt1 && inputs.lt2) {
-        outputs.dpadUp = inputs.rt4;
-        outputs.dpadDown = inputs.rt2;
-        outputs.dpadLeft = inputs.rt3;
-        outputs.dpadRight = inputs.rt5;
-    }
+    outputs.dpadUp = inputs.lt4;
+    outputs.dpadDown = inputs.lt5;
+    outputs.dpadLeft = inputs.rf7;
+    outputs.dpadRight = inputs.rf8;
+    
 }
 
 void Rivals2::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs) {
@@ -88,7 +78,7 @@ void Rivals2::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs
         timer = 0;
         input_persist = false;
     }
-
+/*
     if (inputs.lt1) { // if ModX is held
         if (directions.horizontal) {
             // 76 gives 0.58~ in-game for a medium speed walk. will also do tilts
@@ -175,7 +165,7 @@ void Rivals2::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs
             }
         }
     }
-
+*/
     if (inputs.lt2) { // if ModY is held
         if (directions.horizontal) {
             // 53 equates to 0.318~ in-game. 0.3 is min to achieve a walk
@@ -255,15 +245,7 @@ void Rivals2::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs
         }
     }
 
-    // Shut off C-stick when using D-Pad layer.
-    if (inputs.lt1 && inputs.lt2) {
-        outputs.rightStickX = 128;
-        outputs.rightStickY = 128;
-    }
 
-    // Nunchuk overrides left stick.
-    if (inputs.nunchuk_connected) {
-        outputs.leftStickX = inputs.nunchuk_x;
-        outputs.leftStickY = inputs.nunchuk_y;
-    }
+
+
 }
